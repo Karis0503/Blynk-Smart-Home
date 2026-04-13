@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Budget Tracker Pro</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <div>
+        <h1>Budget Tracker Pro</h1>
+        <p>Kelola pemasukan, pengeluaran, dan target finansial secara detail.</p>
+      </div>
+      <div class="topbar-actions">
+        <button id="exportBtn" class="btn">Export Data</button>
+        <label class="btn btn-secondary" for="importInput">Import Data</label>
+        <input id="importInput" type="file" accept="application/json" hidden />
+      </div>
+    </header>
+
+    <main class="layout">
+      <section class="card summary-grid">
+        <article>
+          <h3>Saldo</h3>
+          <p id="balanceValue">Rp0</p>
+        </article>
+        <article>
+          <h3>Total Pemasukan</h3>
+          <p id="incomeValue">Rp0</p>
+        </article>
+        <article>
+          <h3>Total Pengeluaran</h3>
+          <p id="expenseValue">Rp0</p>
+        </article>
+        <article>
+          <h3>Saving Rate</h3>
+          <p id="savingRate">0%</p>
+        </article>
+      </section>
+
+      <section class="grid-two">
+        <article class="card">
+          <h2>Tambah Transaksi</h2>
+          <form id="transactionForm" class="form-grid">
+            <label>
+              Nama transaksi
+              <input type="text" id="title" required placeholder="Contoh: Gaji / Makan" />
+            </label>
+            <label>
+              Nominal
+              <input type="number" id="amount" min="1" required placeholder="500000" />
+            </label>
+            <label>
+              Tipe
+              <select id="type">
+                <option value="income">Pemasukan</option>
+                <option value="expense">Pengeluaran</option>
+              </select>
+            </label>
+            <label>
+              Kategori
+              <select id="category"></select>
+            </label>
+            <label>
+              Tanggal
+              <input type="date" id="date" required />
+            </label>
+            <label>
+              Rekening
+              <select id="account">
+                <option>Cash</option>
+                <option>Bank</option>
+                <option>E-Wallet</option>
+                <option>Kartu Kredit</option>
+              </select>
+            </label>
+            <label>
+              Repeat
+              <select id="recurring">
+                <option value="none">Tidak</option>
+                <option value="monthly">Bulanan</option>
+                <option value="weekly">Mingguan</option>
+              </select>
+            </label>
+            <label class="full-width">
+              Catatan
+              <textarea id="notes" rows="2" placeholder="Opsional"></textarea>
+            </label>
+            <button class="btn full-width" type="submit">Simpan Transaksi</button>
+          </form>
+        </article>
+
+        <article class="card">
+          <h2>Manajemen Budget per Kategori</h2>
+          <form id="budgetForm" class="inline-form">
+            <select id="budgetCategory"></select>
+            <input id="budgetLimit" type="number" min="1" placeholder="Limit bulanan" required />
+            <button class="btn" type="submit">Set Budget</button>
+          </form>
+          <div id="budgetList" class="budget-list"></div>
+
+          <h2>Target Tabungan</h2>
+          <form id="goalForm" class="inline-form">
+            <input id="goalName" type="text" placeholder="Contoh: Dana Darurat" required />
+            <input id="goalTarget" type="number" min="1" placeholder="Target nominal" required />
+            <button class="btn" type="submit">Tambah Goal</button>
+          </form>
+          <div id="goalList" class="goal-list"></div>
+        </article>
+      </section>
+
+      <section class="grid-two">
+        <article class="card">
+          <h2>Filter & Analitik</h2>
+          <div class="filters">
+            <select id="monthFilter"></select>
+            <select id="typeFilter">
+              <option value="all">Semua Tipe</option>
+              <option value="income">Pemasukan</option>
+              <option value="expense">Pengeluaran</option>
+            </select>
+            <select id="categoryFilter"></select>
+          </div>
+          <canvas id="monthlyChart" width="600" height="280"></canvas>
+        </article>
+
+        <article class="card">
+          <h2>Daftar Transaksi</h2>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Tanggal</th>
+                  <th>Nama</th>
+                  <th>Kategori</th>
+                  <th>Akun</th>
+                  <th>Tipe</th>
+                  <th>Nominal</th>
+                  <th>Aksi</th>
+                </tr>
+              </thead>
+              <tbody id="transactionTable"></tbody>
+            </table>
+          </div>
+        </article>
+      </section>
+    </main>
+
+    <template id="goalTemplate">
+      <div class="goal-item">
+        <div>
+          <h4 class="goal-name"></h4>
+          <small class="goal-meta"></small>
+        </div>
+        <div class="progress">
+          <div class="progress-bar"></div>
+        </div>
+      </div>
+    </template>
+
+    <script src="app.js"></script>
+  </body>
+</html>
